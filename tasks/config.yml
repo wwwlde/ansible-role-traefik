@@ -1,0 +1,7 @@
+---
+
+- name: Create Traefik systemd file
+  template:
+    src: traefik.service.j2
+    dest: /etc/systemd/system/traefik.service
+  notify: restart traefik

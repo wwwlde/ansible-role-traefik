@@ -1,0 +1,12 @@
+---
+
+- import_tasks: install.yml
+
+- import_tasks: config.yml
+
+- name: Ensure Traefik is started and enabled
+  systemd:
+    name: traefik
+    state: started
+    enabled: true
+    daemon_reload: true

@@ -1,0 +1,39 @@
+---
+
+- name: Create Traefik system group
+  group:
+    name: "{{ traefik_system_group }}"
+    state: present
+    system: true
+
+- name: Create the Traefik user
+  user:
+    name: "{{ traefik_system_user }}"
+    groups: "{{ traefik_system_group }}"
+    append: true
+    shell: /usr/sbin/nologin
+    system: true
+    createhome: false
+
+- name: Ensure Traefik directory exist
+  file:
+    path: "{{ traefik_install_dir }}"
+    state: directory
+
+- name: Create Traefik folder
+  file:
+    path: "{{ traefik_install_dir }}/{{ traefik_name }}"
+    state: directory
+
+- name: Unarchive Traefik
+  unarchive:
+    remote_src: yes
+    dest: "{{ traefik_install_dir }}/{{ traefik_name }}"
+    src: "{{ traefik_url }}"
+
+- name: Create symlink to the current release
+  file:
+    src: "{{ traefik_binary }}"
+    path: "{{ traefik_symlink }}"
+    state: link
+  notify: restart traefik

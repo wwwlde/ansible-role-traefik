@@ -1,0 +1,30 @@
+---
+traefik_install_dir: "/opt/traefik"
+traefik_version: "2.4.8"
+traefik_name: "traefik_v{{ traefik_version }}_linux_{{ go_arch }}"
+traefik_url: "https://github.com/traefik/traefik/releases/download/v{{ traefik_version }}/{{ traefik_name }}.tar.gz"
+
+traefik_binary: "{{ traefik_install_dir }}/{{ traefik_name }}/traefik"
+traefik_symlink: "{{ traefik_install_dir }}/traefik"
+
+traefik_system_group: "traefik"
+traefik_system_user: "{{ traefik_system_group }}"
+
+traefik_config_flags:
+  'global.sendAnonymousUsage': 'false'
+  'api': 'true'
+  'api.dashboard': 'true'
+  'api.insecure': 'true'
+  'entrypoints.web.address': ':80'
+  'entrypoints.traefik.address': ':8081'
+  'metrics.prometheus': 'true'
+  'metrics.prometheus.addEntryPointsLabels': 'true'
+  'entryPoints.metrics.address': ':8082'
+  'metrics.prometheus.entryPoint': 'metrics'
+  'providers.consulcatalog': 'true'
+  'providers.consulcatalog.refreshInterval': '30s'
+  'providers.consulcatalog.endpoint.address': '127.0.0.1:8500'
+  'providers.consulcatalog.endpoint.datacenter': 'rbx3'
+  'providers.consulcatalog.endpoint.endpointwaittime': '15s'
+  'providers.consulcatalog.exposedByDefault': 'false'
+  'log.level': 'debug'

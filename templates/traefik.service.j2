@@ -1,0 +1,14 @@
+# This unit file is retrieved from traefik github repository
+# @see https://raw.githubusercontent.com/containous/traefik/master/contrib/systemd/traefik.service
+[Unit]
+Description=Traefik
+
+[Service]
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+User={{ traefik_system_user }}
+Group={{ traefik_system_group }}
+ExecStart={{ traefik_symlink }} {% for flag, flag_value in traefik_config_flags.items() %}--{{ flag }}={{ flag_value }} {% endfor %}
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
